@@ -71,9 +71,11 @@ export class FoodCatalogueComponent implements OnInit{
   onCheckout(){
 
     this.order = {
-      foodItemList: this.foodItemCart,
-      restaurantId: this.foodItemResponse.restaurant.id?this.foodItemResponse.restaurant.id:0
-    }
+      foodItemDTOList: this.foodItemCart,
+      restaurantId: this.foodItemResponse.restaurant.id
+        ? this.foodItemResponse.restaurant.id
+        : 0,
+    };
     this.router.navigate(['/order-summary'], {
       queryParams: { data: JSON.stringify(this.order) },
     });

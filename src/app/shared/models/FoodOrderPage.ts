@@ -1,6 +1,6 @@
 import { FoodItem } from './FoodItem';
 
 export interface FoodOrderPage {
-  foodItemList: FoodItem[];
+  foodItemDTOList: FoodItem[];
   restaurantId: number;
 }

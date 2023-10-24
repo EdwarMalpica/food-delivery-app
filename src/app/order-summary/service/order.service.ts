@@ -15,7 +15,7 @@ export class OrderService {
   }
   httpOptions = {
     headers: new HttpHeaders( {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
     })
   };

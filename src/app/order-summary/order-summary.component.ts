@@ -8,7 +8,7 @@ import { OrderService } from './service/order.service';
   templateUrl: './order-summary.component.html',
   styleUrls: ['./order-summary.component.css'],
 })
-export class OrderSummaryComponent implements OnInit{
+export class OrderSummaryComponent implements OnInit {
   orderSummary?: OrderDTO;
   obj: any;
   total?: any;
@@ -23,29 +23,38 @@ export class OrderSummaryComponent implements OnInit{
   ngOnInit(): void {
     const data = this.route.snapshot.queryParams['data'];
     this.obj = JSON.parse(data);
+    console.log(this.obj);
     this.obj.userId = 1;
-    this.obj.orderSummary = this.obj;
-    this.total = this.calculateTotal(this.obj.foodItemList);
+    this.total = this.calculateTotal(this.obj.foodItemDTOList);
   }
 
-  calculateTotal(foodItemList: any) {
+  calculateTotal(foodItemDTOList: any) {
     let total = 0;
-    for (const element of foodItemList) {
-     total +=  (element.price * element.quantity);
+    for (const element of foodItemDTOList) {
+      total += element.price * element.quantity;
     }
     return total;
   }
 
   saveOrder() {
-    this.orderService.saveOrder(this.orderSummary).subscribe(
-      {
-        next: (response) =>{this.showDialog = true;},
-        error: (error) => console.log("Failed to save data:", error),
-        complete: () => {this.showDialog = false;}
-      }
-    );
+    let data = {
+      userId: this.obj.userId,
+      restaurantId: this.obj.restaurantId,
+      foodItemDTOList: this.obj.foodItemDTOList,
+    };
+
+    this.orderService.saveOrder(data).subscribe({
+      next: (response) => {
+        console.log('Response received:', response);
+        this.showDialog = true;
+      },
+      error: (error) => console.log('Failed to save data:', error),
+      complete: () => {
+        //this.showDialog = false;
+      },
+    });
   }
-  closeDialog(){
+  closeDialog() {
     this.showDialog = false;
     this.router.navigate(['/']);
   }
